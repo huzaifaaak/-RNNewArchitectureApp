@@ -7,7 +7,6 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,6 +15,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
 
 import {
@@ -25,8 +25,9 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import NativeAnswerSolver from './js/NativeAnswerSolver';
 
-const Section = ({children, title}): Node => {
+const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -52,7 +53,15 @@ const Section = ({children, title}): Node => {
   );
 };
 
-const App: () => Node = () => {
+const onPress = () => {
+  const theAnswer =
+    NativeAnswerSolver?.answerTheUltimateQuestion(
+      "What's the Answer to the Ultimate Question of Life, the Universe, and Everything",
+    ) || '';
+  console.log('The answer is: ' + theAnswer);
+};
+
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -83,6 +92,11 @@ const App: () => Node = () => {
           <Section title="Learn More">
             Read the docs to discover what to do next:
           </Section>
+          <Button
+            title="Click to invoke your Turbo Module!"
+            onPress={onPress}
+          />
+
           <LearnMoreLinks />
         </View>
       </ScrollView>
