@@ -24,6 +24,14 @@ import com.rnnewarchitectureapp.newarchitecture.components.MainComponentsRegistr
 import com.rnnewarchitectureapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
+import androidx.annotation.Nullable;
+import com.facebook.react.TurboReactPackage;
+import com.facebook.react.bridge.NativeModule;
+import com.facebook.react.module.model.ReactModuleInfo;
+import com.facebook.react.module.model.ReactModuleInfoProvider;
+import com.rnnewarchitectureapp.newarchitecture.modules.NativeAnswerSolver;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link ReactNativeHost} that helps you load everything needed for the New Architecture, both
@@ -51,6 +59,37 @@ public class MainApplicationReactNativeHost extends ReactNativeHost {
     //     packages.add(new TurboReactPackage() { ... });
     // If you have custom Fabric Components, their ViewManagers should also be loaded here
     // inside a ReactPackage.
+    packages.add(new TurboReactPackage() {
+      @Nullable
+      @Override
+      public NativeModule getModule(String name, ReactApplicationContext reactContext) {
+        if (name.equals(NativeAnswerSolver.NAME)) {
+          return new NativeAnswerSolver(reactContext);
+        } else {
+          return null;
+        }
+      }
+
+      @Override
+      public ReactModuleInfoProvider getReactModuleInfoProvider() {
+        return () -> {
+          final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
+          moduleInfos.put(
+                  NativeAnswerSolver.NAME,
+                  new ReactModuleInfo(
+                          NativeAnswerSolver.NAME,
+                          "NativeAnswerSolver",
+                          false, // canOverrideExistingModule
+                          false, // needsEagerInit
+                          true, // hasConstants
+                          false, // isCxxModule
+                          true // isTurboModule
+                  )
+          );
+          return moduleInfos;
+        };
+      }
+    });
     return packages;
   }
 
